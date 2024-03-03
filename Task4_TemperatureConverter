@@ -1,0 +1,106 @@
+package cognifyztechnologiesproject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.border.LineBorder;
+import java.text.DecimalFormat;
+
+
+public class TemperatureConverter extends JFrame implements ActionListener {
+     JButton convert,reset;
+     JPanel cho;
+     Choice scale;
+     JTextField text;
+     DecimalFormat decimalFormat= new DecimalFormat("#.00");
+     
+    TemperatureConverter(){
+        setSize(900,400);
+        setLocation(350,200);
+        setTitle("Temperature Converter");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        
+       
+       
+        ImageIcon i1= new ImageIcon(ClassLoader.getSystemResource("icons/temperature.jpg"));
+        Image i2=i1.getImage().getScaledInstance(900, 400, Image.SCALE_DEFAULT);
+        ImageIcon i3 = new ImageIcon(i2);
+        JLabel image= new JLabel(i3);
+        image.setBounds(0,0,900,400);
+        add(image);
+        
+        text= new JTextField();
+        text.setBounds(290, 130,300, 30);
+        text.setFont(new Font("Tahoma",Font.PLAIN,20));
+        text.setText("Enter The Temperature");
+        
+        text.setBorder(BorderFactory.createEmptyBorder());
+        image.add(text);
+        
+        
+       
+        convert = new JButton("Convert");
+        convert.setBounds(360, 250, 130,30);
+        convert.setBackground(new Color(255,127,127));
+        convert.setForeground(Color.WHITE);
+        convert.setBorder(new LineBorder(new Color(255,127,127)));
+        convert.addActionListener(this);
+        image.add(convert);
+        
+        reset= new JButton("Clear");
+        reset.setBounds(360, 290, 130,30);
+        reset.setBackground(new Color(255,127,127));
+        reset.setForeground(Color.WHITE);
+        reset.setBorder(new LineBorder(new Color(255,127,127)));
+        reset.addActionListener(this);
+        image.add(reset);
+        
+        cho= new JPanel();
+        cho.setLayout(null);
+        cho.setBounds(290, 165,300, 20);
+        
+        image.add(cho);
+        
+         scale= new Choice();
+         scale.add("Celcius");
+         scale.add("Faranheit");
+         scale.setBounds(0,0,300,20);
+         cho.add(scale);
+         
+         setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource()==convert){
+          double temp = Double.parseDouble(text.getText());
+          
+          text.setText(" ");
+          
+          double temp2;
+          
+          String scl = scale.getSelectedItem();
+          if(scl=="Celcius"){
+              temp2= (temp*1.8)+32;
+                text.setText(decimalFormat.format(temp)+" Deg. "+scl+ " is "+decimalFormat.format(temp2)+" Deg. Faranheit");
+                text.setFont(new Font("Tahoma",Font.PLAIN,15));
+          }
+          else if(scl=="Faranheit"){
+              temp2=(temp-32)*5/9;
+                text.setText(decimalFormat.format(temp)+" Deg. "+scl+ " is "+decimalFormat.format(temp2)+" Deg. Celcius");
+                text.setFont(new Font("Tahoma",Font.PLAIN,15));
+          }
+          
+        
+          
+        }
+        
+        if(e.getSource()==reset){
+            text.setText("");
+        }
+    }
+    public static void main(String[]args){
+        new TemperatureConverter();
+        
+    }
+}
