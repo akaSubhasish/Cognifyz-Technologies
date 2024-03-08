@@ -1,0 +1,175 @@
+package cognifyztechnologiesproject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class PatternGenerator extends JFrame {
+    private JTextArea patternArea;
+    private JTextField rowsInput;
+
+    public PatternGenerator() {
+        setTitle("Pattern Generator");
+        setSize(415, 300);
+        
+        setLocationRelativeTo(null); 
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        getContentPane().setBackground(new Color(53,147,131));
+        
+        JPanel Panel = new JPanel();
+        Panel.setLayout(null); 
+        Panel.setBackground(new Color(53,147,131));
+        Panel.setBounds(0, 0, 400, 80);
+        add(Panel);
+    
+        
+        patternArea = new JTextArea();
+        patternArea.setEditable(true);
+        patternArea.setBounds(0,80,400,220);
+        patternArea.setFont(new Font("Tahoma",Font.CENTER_BASELINE,16));
+        patternArea.setBackground(new Color(53,147,131));
+        patternArea.setForeground(Color.WHITE);
+        patternArea.setEditable(false);
+        patternArea.setBorder(BorderFactory.createEmptyBorder());
+        JScrollPane scrollPane = new JScrollPane(patternArea);
+        scrollPane.setBounds(10, 90, 380, 160);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        add(scrollPane);
+
+        JLabel rows= new JLabel("ROWS:");
+        rows.setFont(new Font("Raleway",Font.BOLD,18));
+        rows.setForeground(Color.BLACK);
+        rows.setBounds(90, 10, 100, 25);
+        Panel.add(rows);
+        
+        rowsInput = new JTextField(10);
+        rowsInput.setText("5"); 
+        rowsInput.setBorder(BorderFactory.createEmptyBorder());
+        rowsInput.setBounds(155, 10, 100, 25);
+        rowsInput.setFont(new Font("Tahoma",Font.PLAIN,14));
+        Panel.add(rowsInput);
+
+        JButton square = new JButton("Square");
+        square.setBounds(10, 40, 80, 25);
+        square.setBorder(BorderFactory.createEmptyBorder());
+        square.setFont(new Font("Tahoma",Font.PLAIN,14));
+        square.setBackground(new Color(226,193,172));
+        Panel.add(square);
+        
+        JButton rectangle = new JButton("Rectangle");
+        rectangle.setBounds(100, 40, 100, 25);
+        rectangle.setBorder(BorderFactory.createEmptyBorder());
+        rectangle.setBackground(new Color(226,193,172));
+        rectangle.setFont(new Font("Tahoma",Font.PLAIN,14));
+        Panel.add(rectangle);
+        
+        JButton triangle = new JButton("Triangle");
+        triangle.setBounds(210, 40, 90, 25);
+        triangle.setBorder(BorderFactory.createEmptyBorder());
+        triangle.setBackground(new Color(226,193,172));
+        triangle.setFont(new Font("Tahoma",Font.PLAIN,14));
+        Panel.add(triangle);
+        
+        JButton clear = new JButton("Clear");
+        clear.setBounds(310, 40, 80, 25);
+        clear.setBorder(BorderFactory.createEmptyBorder());
+        clear.setBackground(new Color(226,193,172));
+        clear.setFont(new Font("Tahoma",Font.PLAIN,14));
+        Panel.add(clear);
+
+        square.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                generateSquarePattern();
+            }
+            
+       });
+
+        rectangle.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                generateRectanglePattern();
+            }
+        });
+
+        triangle.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                generateTrianglePattern();
+            }
+        });
+
+        clear.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                
+                patternArea.setText("");
+            }
+        });
+        
+        
+        setVisible(true);
+    }
+
+    private void generateSquarePattern() {
+        int rows = Integer.parseInt(rowsInput.getText());
+        StringBuilder pattern = new StringBuilder();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < rows; j++) {
+                pattern.append(j + 1).append(" ");
+            }
+            pattern.append("\n");
+        }
+
+        patternArea.setText(pattern.toString());
+    }
+
+    private void generateRectanglePattern() {
+        int rows = Integer.parseInt(rowsInput.getText());
+        int cols = rows * 2; 
+        StringBuilder pattern = new StringBuilder();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                pattern.append(j + 1).append(" ");
+            }
+            pattern.append("\n");
+        }
+
+        patternArea.setText(pattern.toString());
+    }
+
+    private void generateTrianglePattern() {
+        int rows = Integer.parseInt(rowsInput.getText());
+        StringBuilder pattern = new StringBuilder();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j <= i; j++) {
+                pattern.append(j + 1).append(" ");
+            }
+            pattern.append("\n");
+        }
+
+        patternArea.setText(pattern.toString());
+    }
+
+    private void generatePattern() {
+       
+        if (patternArea.getText().equals("Square")) {
+            generateSquarePattern();
+        } else if (patternArea.getText().equals("Rectangle")) {
+            generateRectanglePattern();
+        } else if (patternArea.getText().equals("Triangle")) {
+            generateTrianglePattern();
+        }
+    }
+
+    public static void main(String[] args) {
+       
+       new PatternGenerator();
+    }
+}
