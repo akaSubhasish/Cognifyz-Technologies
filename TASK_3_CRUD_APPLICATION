@@ -1,0 +1,185 @@
+package cognifyztechnologiesproject;
+
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+class Task {
+    private String name;
+    private String description;
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+}
+
+public class Crud extends JFrame {
+    private ArrayList<Task> taskList = new ArrayList<>();
+    private DefaultListModel<String> taskListModel;
+    private JList<String> taskListUI;
+
+    public Crud() {
+        setTitle("Task Manager");
+        setSize(390, 700);
+        setUndecorated(true);
+       
+     
+        setLocation(500,50);
+        setLayout(null);
+        getContentPane().setBackground(Color.BLACK);
+
+        JLabel nameLabel = new JLabel("Task Name:");
+        nameLabel.setBounds(20, 560, 100, 25);
+        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setFont(new Font("Tahoma",Font.PLAIN,18));
+        add(nameLabel);
+
+        JTextField nameField = new JTextField();
+        nameField.setBounds(120, 560, 250, 25);
+        nameField.setBorder(BorderFactory.createEmptyBorder());
+        nameField.setFont(new Font("Raleway",Font.PLAIN,16));
+        add(nameField);
+
+        JLabel descLabel = new JLabel("Description:");
+        descLabel.setBounds(20, 590, 100, 25);
+        descLabel.setForeground(Color.WHITE);
+        descLabel.setFont(new Font("Tahoma",Font.PLAIN,18));
+        add(descLabel);
+
+        JTextField descField = new JTextField();
+        descField.setBounds(120, 590, 250, 25);
+        descField.setBorder(BorderFactory.createEmptyBorder());
+        descField.setFont(new Font("Raleway",Font.PLAIN,16));
+        add(descField);
+
+        JButton createBtn = new JButton("Create Task");
+        createBtn.setBounds(20, 630, 150, 25);
+        createBtn.setBorder(BorderFactory.createEmptyBorder());
+        createBtn.setBackground(new Color(248,148,20));
+        createBtn.setFont(new Font("Tahoma",Font.PLAIN,16));
+        createBtn.setForeground(Color.BLACK);
+        add(createBtn);
+        
+        JButton closeBtn = new JButton("Close");
+        closeBtn.setBounds(220, 660, 150, 25);
+        closeBtn.setBorder(BorderFactory.createEmptyBorder());
+        closeBtn.setBackground(new Color(248,148,20));
+        closeBtn.setFont(new Font("Tahoma",Font.PLAIN,16));
+        closeBtn.setForeground(Color.BLACK);
+        add(closeBtn);
+
+        taskListModel = new DefaultListModel<>();
+        taskListUI = new JList<>(taskListModel);
+        taskListUI.setFont(new Font("Tahoma",Font.PLAIN,16));
+        JScrollPane scrollPane = new JScrollPane(taskListUI);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+       
+        scrollPane.setBounds(20, 20, 350, 500);
+        add(scrollPane);
+
+        JButton updateBtn = new JButton("Update Task");
+        updateBtn.setBounds(220, 630, 150, 25);
+        updateBtn.setBorder(BorderFactory.createEmptyBorder());
+        updateBtn.setFont(new Font("Tahoma",Font.PLAIN,16));
+        updateBtn.setForeground(Color.BLACK);
+        updateBtn.setBackground(new Color(248,148,20));
+        add(updateBtn);
+
+        JButton deleteBtn = new JButton("Delete Task");
+        deleteBtn.setBounds(20, 660, 150, 25);
+        deleteBtn.setBorder(BorderFactory.createEmptyBorder());
+        deleteBtn.setFont(new Font("Tahoma",Font.PLAIN,16));
+        deleteBtn.setForeground(Color.BLACK);
+        deleteBtn.setBackground(new Color(248,148,20));
+        add(deleteBtn);
+
+        createBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText();
+                String desc = descField.getText();
+                Task task = new Task(name, desc);
+                taskList.add(task);
+                taskListModel.addElement(task.getName());
+                nameField.setText("");
+                descField.setText("");
+            }
+        });
+
+        taskListUI.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int index = taskListUI.getSelectedIndex();
+                 taskListUI.setSelectionBackground(new Color(144,238,144));
+                 
+                if (index != -1) {
+                    Task selectedTask = taskList.get(index);
+                    nameField.setText(selectedTask.getName());
+                    descField.setText(selectedTask.getDescription());
+                }
+            }
+        });
+
+        updateBtn.addActionListener(
+        new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            int index = taskListUI.getSelectedIndex();
+            if (index != -1) {
+                Task selectedTask = taskList.get(index);
+                String newName = nameField.getText();
+                String newDesc = descField.getText();
+                selectedTask.setName(newName);
+                selectedTask.setDescription(newDesc);
+                taskListModel.set(index, newName);
+                nameField.setText("");
+                descField.setText("");
+            }}
+        });
+
+        deleteBtn.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            int index = taskListUI.getSelectedIndex();
+            if (index != -1) {
+                taskList.remove(index);
+                taskListModel.remove(index);
+                nameField.setText("");
+                descField.setText("");
+            }}
+        });
+        
+        
+       closeBtn.addActionListener(new ActionListener(){
+           public void actionPerformed(ActionEvent ae){
+               setVisible(false);
+           }
+       }
+       );
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Crud crud = new Crud();
+            crud.setVisible(true);
+        });
+    }
+}
