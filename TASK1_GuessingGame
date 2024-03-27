@@ -1,0 +1,108 @@
+package cognifyztechnologiesproject;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class GuessingGame extends JFrame {
+     int cnum;
+     JTextField text;
+     JLabel mainMSG;
+    int attemptLeft;
+    int maxAttempt=10;
+    int attemptWon=0;
+    int score;
+    int attemptPlayed;
+    JLabel scoreLabel;
+    
+
+    public GuessingGame() {
+        setTitle("GUESS THE NUMBER");
+        setSize(900, 100);
+        
+     
+        setLocation(300,350);
+        getContentPane().setBackground(Color.WHITE);
+        
+        newGame();
+        
+
+        JLabel msg1 = new JLabel("ENTER A NUMBER FROM 1-100");       
+        msg1.setFont(new Font("Osward",Font.BOLD,20));
+        msg1.setBounds(225, 40,500,40);
+        msg1.setForeground(Color.BLACK);
+        add(msg1);
+        
+        text = new JTextField(10);        
+        text.setBounds(250, 100,250, 30);
+        text.setFont(new Font("Arial",Font.BOLD,14));
+       
+        scoreLabel= new JLabel("Attempts Won: "+attemptWon+" | Attempts Left: "+attemptLeft+" "
+                + "| Attempts Played: "+attemptPlayed);
+        scoreLabel.setForeground(Color.BLUE);
+        add(scoreLabel);
+        JButton sub = new JButton("CHECK");
+        
+        sub.setBounds(320, 200, 100, 30);
+        sub.setBackground(Color.BLACK);
+        sub.setForeground(Color.WHITE);
+        mainMSG = new JLabel("");
+        mainMSG.setFont(new Font("Serif Bold Italic",Font.BOLD,15));
+       
+        sub.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                game();
+                text.setText("");
+            }
+        });
+
+        setLayout(new FlowLayout());
+        add(msg1);
+        add(text);
+        add(sub);
+        add(mainMSG);
+
+        setVisible(true);
+    }
+    
+    public void newGame(){
+        cnum = (int) (Math.random() * 100) + 1;
+      
+        attemptLeft=maxAttempt;
+        score=0;
+        attemptPlayed=attemptPlayed+1;
+    }
+
+    private void game() {
+        try {
+            int userGuess = Integer.parseInt(text.getText());
+            attemptLeft=attemptLeft-1;
+           
+            if (userGuess == cnum) {
+                mainMSG.setText("YOU GUESSED IT!");
+                mainMSG.setForeground(Color.GREEN);
+                attemptWon=attemptWon+1;
+                newGame();
+               
+            }else if(attemptLeft==0){
+                mainMSG.setText("NO ATTEMPTS LEFT PLAY AGAIN!");
+               
+            } 
+            else if (userGuess < cnum) {
+                mainMSG.setText("TOO LOW TRY AGAIN!");
+                 mainMSG.setForeground(Color.red);
+            } else {
+                mainMSG.setText("TOO HIGH TRY AGAIN!");
+                 mainMSG.setForeground(Color.red);
+            }
+        } catch (Exception e) {
+            mainMSG.setText("Invalid input. Please enter a number.");
+        }
+        scoreLabel.setText("Rounds Won: "+attemptWon+" Attempts Left: "+attemptLeft+" Rounds Played: "
+                +attemptPlayed);
+    }
+
+    public static void main(String[] args) {     
+                new GuessingGame();         
+    }
+}
